@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<context:component-scan base-package="yju.wdb.test"></context:component-scan>
+	
+	<context:component-scan base-package="yju.wdb.service"></context:component-scan>
+	
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+		<!-- 
+		 property = 맴버 변수
+		 driverClassName이라는 맴버변수가 있고 걔의 값(value)는 얘로 해라
+		 DB를 연결하기 위한 정보
+		 이 연결정보를 가지고    아래의 dataSource객체가 생성된다.
+		  -->
+		<property name="driverClassName" value="org.mariadb.jdbc.Driver" />
+		<property name="jdbcUrl" value="jdbc:mariadb://localhost:3306/springbbs" />
+		<property name="username" value="root" />
+		<property name="password" value="admin" />
+	</bean>
+	
+	<!-- 
+	bean => spring bean으로 등록
+	dataSource가 나타내는것이 커넥션 풀이다.
+	 -->
+	<bean id = "dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+		<constructor-arg ref="hikariConfig" /> <!-- 이미 존재하는 객체를 참조할때는 ref => 위에 있는 hikariConfig를 참조-->
+	</bean>
+	
+	<!-- mybatis 생성 -->
+	<bean id="sqlSesstionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	
+	<mybatis-spring:scan base-package="yju.wdb.mapper" />
+	
+	
+	
+	
+	
+	
+	
+	
+</beans>

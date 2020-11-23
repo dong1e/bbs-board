@@ -1,0 +1,19 @@
+CREATE TABLE tbl_board (
+	bno INT PRIMARY KEY  AUTO_INCREMENT,
+	title VARCHAR(200) NOT NULL,
+	content VARCHAR(20000) NOT NULL,
+	writer VARCHAR(50) NOT NULL,
+	regdate DATETIME DEFAULT NOW(),
+	updatedate DATETIME DEFAULT NOW()
+	);
+	
+	
+	
+CREATE TABLE tbl_reply (
+	rno INT PRIMARY KEY AUTO_INCREMENT,
+	bno INT REFERENCES tbl_board(bno),
+	reply VARCHAR(1000) NOT NULL,
+	replyer VARCHAR(50) NOT NULL,
+	replyDate DATETIME DEFAULT NOW(),
+	updateDate DATETIME DEFAULT NOW()
+	)
